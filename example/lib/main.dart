@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onSelectItem: (index) => setState(() => _selectedIndex = index),
         items: [
-          BottomBarWithSheetItem(icon: Icons.people),
+          BottomBarWithSheetItem(),
           BottomBarWithSheetItem(icon: Icons.shopping_cart),
           BottomBarWithSheetItem(icon: Icons.settings),
           BottomBarWithSheetItem(icon: Icons.favorite),
