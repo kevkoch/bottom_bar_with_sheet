@@ -63,6 +63,10 @@ class BottomBarTheme {
 
   final double nonselectedItemIconSize;
 
+  final double selectedItemPadding;
+
+  final double nonselectedItemPadding;
+
   static const _selectedItemDefaultTextStyle = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
@@ -105,6 +109,8 @@ class BottomBarTheme {
     this.selectedItemBackgroundColor = Colors.blue,
     this.selectedItemIconColor = Colors.white,
     this.selectedItemLabelColor = Colors.black,
+    this.selectedItemPadding = 5,
+    this.nonselectedItemPadding = 5,
     this.nonselectedItemIconSize = 60,
     this.itemIconColor = Colors.grey,
     this.itemLabelColor = Colors.grey,

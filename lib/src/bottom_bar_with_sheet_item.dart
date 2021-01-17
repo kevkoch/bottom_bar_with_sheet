@@ -61,7 +61,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
           );
   }
 
-  Widget _buildOpenedButton(png, IconData icon, Color selectedItemIconColor,
+  Widget _buildOpenedButton(png, IconData icon,double padding, Color selectedItemIconColor,
       double selectedItemIconSize) {
     return Center(
       child: ClipOval(
@@ -70,7 +70,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
           child: Ink(
             child: SizedBox(
                 child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding:  EdgeInsets.all(padding),
               child: icon == null
                   ? Image.asset(
                       png,
@@ -89,7 +89,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
     );
   }
 
-  Widget _buildClosedButton(png, IconData icon, Color selectedItemIconColor,
+  Widget _buildClosedButton(png, IconData icon,double padding, Color selectedItemIconColor,
       double selectedItemIconSize) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
@@ -132,11 +132,13 @@ class BottomBarWithSheetItem extends StatelessWidget {
         ? _buildOpenedButton(
             pngPath,
             icon,
+            _bottomBarTheme.selectedItemPadding,
             _bottomBarTheme.selectedItemIconColor,
             _bottomBarTheme.selectedItemIconSize)
         : _buildClosedButton(
             pngPath,
             icon,
+            _bottomBarTheme.nonselectedItemIconSize,
             _bottomBarTheme.itemIconColor,
             _bottomBarTheme.nonselectedItemIconSize);
 
