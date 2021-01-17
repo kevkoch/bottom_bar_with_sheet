@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
         sheetChild: Center(child: Text("Place for your another content")),
         bottomBarTheme: BottomBarTheme(
           mainButtonPosition: MainButtonPosition.Middle,
+          selectedItemIconSize: 50,
         ),
         mainActionButtonTheme: MainActionButtonTheme(
           size: 55,
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onSelectItem: (index) => setState(() => _selectedIndex = index),
         items: [
-          BottomBarWithSheetItem(),
+          BottomBarWithSheetItem(pngPath: "assets/img/smile.png",icon: null,selectedBackgroundColor: Colors.green,itemIconColor: Colors.red,itemWidth: 200,),
           BottomBarWithSheetItem(icon: Icons.shopping_cart),
           BottomBarWithSheetItem(icon: Icons.settings),
           BottomBarWithSheetItem(icon: Icons.favorite),

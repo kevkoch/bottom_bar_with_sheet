@@ -14,7 +14,7 @@ const defaultDuration = Duration(milliseconds: 500);
 // ignore: must_be_immutable
 class BottomBarWithSheetItem extends StatelessWidget {
   final String label;
-  final String svgPath;
+  final String pngPath;
   final IconData icon;
   final Duration animationDuration;
   Color selectedBackgroundColor;
@@ -30,7 +30,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
   BottomBarWithSheetItem({
     Key key,
     this.label,
-    this.svgPath,
+    this.pngPath,
     this.itemWidth = 60,
     this.selectedBackgroundColor,
     @required this.icon,
@@ -61,7 +61,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
           );
   }
 
-  Widget _buildOpenedButton(svg, IconData icon, Color selectedItemIconColor,
+  Widget _buildOpenedButton(png, IconData icon, Color selectedItemIconColor,
       double selectedItemIconSize) {
     return Center(
       child: ClipOval(
@@ -72,11 +72,10 @@ class BottomBarWithSheetItem extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: icon == null
-                  ? SvgPicture.asset(
-                      svgPath,
+                  ? Image.asset(
+                      png,
                       height: selectedItemIconSize,
                       width: selectedItemIconSize,
-                      color: selectedItemIconColor,
                     )
                   : Icon(
                       icon,
@@ -90,22 +89,21 @@ class BottomBarWithSheetItem extends StatelessWidget {
     );
   }
 
-  Widget _buildClosedButton(svg,IconData icon,Color selectedItemIconColor,
+  Widget _buildClosedButton(png, IconData icon, Color selectedItemIconColor,
       double selectedItemIconSize) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: icon == null
-          ? SvgPicture.asset(
-        svgPath,
-        height: selectedItemIconSize,
-        width: selectedItemIconSize,
-        color: selectedItemIconColor,
-      )
+          ? Image.asset(
+              png,
+              height: selectedItemIconSize,
+              width: selectedItemIconSize,
+            )
           : Icon(
-        icon,
-        size: 20,
-        color: _bottomBarTheme.itemIconColor,
-      ),
+              icon,
+              size: 20,
+              color: _bottomBarTheme.itemIconColor,
+            ),
     );
   }
 
@@ -131,10 +129,16 @@ class BottomBarWithSheetItem extends StatelessWidget {
     double iconTopSpacer = isSelected ? 0 : 2;
     Widget labelWidget = _buildText(label);
     Widget iconAreaWidget = isSelected
-        ? _buildOpenedButton(svgPath,icon, _bottomBarTheme.selectedItemIconColor,
+        ? _buildOpenedButton(
+            pngPath,
+            icon,
+            _bottomBarTheme.selectedItemIconColor,
             _bottomBarTheme.selectedItemIconSize)
-        : _buildClosedButton(svgPath,icon, _bottomBarTheme.selectedItemIconColor,
-        _bottomBarTheme.selectedItemIconSize);
+        : _buildClosedButton(
+            pngPath,
+            icon,
+            _bottomBarTheme.selectedItemIconColor,
+            _bottomBarTheme.selectedItemIconSize);
 
     return AnimatedContainer(
       duration: animationDuration,
