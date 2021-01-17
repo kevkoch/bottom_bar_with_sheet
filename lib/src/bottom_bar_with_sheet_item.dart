@@ -137,8 +137,8 @@ class BottomBarWithSheetItem extends StatelessWidget {
         : _buildClosedButton(
             pngPath,
             icon,
-            _bottomBarTheme.selectedItemIconColor,
-            _bottomBarTheme.selectedItemIconSize);
+            _bottomBarTheme.itemIconColor,
+            _bottomBarTheme.nonselectedItemIconSize);
 
     return AnimatedContainer(
       duration: animationDuration,

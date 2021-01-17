@@ -61,6 +61,8 @@ class BottomBarTheme {
   /// [double] size of item icon when item is pressed
   final double selectedItemIconSize;
 
+  final double nonselectedItemIconSize;
+
   static const _selectedItemDefaultTextStyle = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
@@ -103,6 +105,7 @@ class BottomBarTheme {
     this.selectedItemBackgroundColor = Colors.blue,
     this.selectedItemIconColor = Colors.white,
     this.selectedItemLabelColor = Colors.black,
+    this.nonselectedItemIconSize = 60,
     this.itemIconColor = Colors.grey,
     this.itemLabelColor = Colors.grey,
     this.selectedItemTextStyle = _selectedItemDefaultTextStyle,
