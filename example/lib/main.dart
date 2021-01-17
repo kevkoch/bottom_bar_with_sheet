@@ -30,23 +30,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(child: Text("Place for your content")),
       bottomNavigationBar: BottomBarWithSheet(
+        disableMainActionButton: true,
         selectedIndex: _selectedIndex,
         sheetChild: Center(child: Text("Place for your another content")),
         bottomBarTheme: BottomBarTheme(
-          mainButtonPosition: MainButtonPosition.Middle,
-          selectedItemIconSize: 50,
+          nonselectedItemPadding: 5,
+          selectedItemIconSize: 60,
+          selectedItemIconColor: Color(0xFFbc13fe),
+          itemIconColor: Colors.grey,
         ),
         mainActionButtonTheme: MainActionButtonTheme(
-          size: 55,
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 35,
-          ),
+
         ),
         onSelectItem: (index) => setState(() => _selectedIndex = index),
         items: [
-          BottomBarWithSheetItem(pngPath: "assets/img/smile.png",icon: null,selectedBackgroundColor: Colors.green,itemIconColor: Colors.red,itemWidth: 200,),
+          BottomBarWithSheetItem(pngPath: "assets/img/smile.png",icon: null,selectedBackgroundColor: Colors.green,itemIconColor: Colors.red),
           BottomBarWithSheetItem(icon: Icons.shopping_cart),
           BottomBarWithSheetItem(icon: Icons.settings),
           BottomBarWithSheetItem(icon: Icons.favorite),

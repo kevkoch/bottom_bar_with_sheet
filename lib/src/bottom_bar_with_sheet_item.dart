@@ -1,4 +1,5 @@
 import 'package:bottom_bar_with_sheet/src/bottom_bar_with_sheet_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -61,16 +62,21 @@ class BottomBarWithSheetItem extends StatelessWidget {
           );
   }
 
-  Widget _buildOpenedButton(png, IconData icon,double padding, Color selectedItemIconColor,
-      double selectedItemIconSize) {
+  Widget _buildOpenedButton(png, IconData icon, double padding,
+      Color selectedItemIconColor, double selectedItemIconSize) {
     return Center(
       child: ClipOval(
-        child: Material(
-          color: selectedBackgroundColor,
-          child: Ink(
-            child: SizedBox(
+        child: CustomPaint(
+          painter: ShapePainter(
+            color: selectedItemIconColor,
+            radius: selectedItemIconSize-5,
+            shadowSpread: 6,
+            strokeWidth: 5,
+            spreadValue: 10,
+          ),
+          child:SizedBox(
                 child: Padding(
-              padding:  EdgeInsets.all(padding),
+              padding: EdgeInsets.all(padding),
               child: icon == null
                   ? Image.asset(
                       png,
@@ -83,28 +89,34 @@ class BottomBarWithSheetItem extends StatelessWidget {
                       color: selectedItemIconColor,
                     ),
             )),
-          ),
+          //),
         ),
       ),
     );
   }
 
-  Widget _buildClosedButton(png, IconData icon,double padding, Color selectedItemIconColor,
-      double selectedItemIconSize) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: icon == null
-          ? Image.asset(
-              png,
-              height: selectedItemIconSize,
-              width: selectedItemIconSize,
-            )
-          : Icon(
-              icon,
-              size: 20,
-              color: _bottomBarTheme.itemIconColor,
-            ),
-    );
+  Widget _buildClosedButton(png, IconData icon, double padding,
+      Color selectedItemIconColor, double selectedItemIconSize) {
+    return Center(
+        child: ClipOval(
+            child: Material(
+                color: selectedItemIconColor,
+                child: Ink(
+                    child: SizedBox(
+                        child: Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: icon == null
+                      ? Image.asset(
+                          png,
+                          height: selectedItemIconSize,
+                          width: selectedItemIconSize,
+                        )
+                      : Icon(
+                          icon,
+                          size: 20,
+                          color: _bottomBarTheme.itemIconColor,
+                        ),
+                ))))));
   }
 
   void setIndex(int index) {
@@ -138,7 +150,7 @@ class BottomBarWithSheetItem extends StatelessWidget {
         : _buildClosedButton(
             pngPath,
             icon,
-            _bottomBarTheme.nonselectedItemIconSize,
+            _bottomBarTheme.nonselectedItemPadding,
             _bottomBarTheme.itemIconColor,
             _bottomBarTheme.nonselectedItemIconSize);
 
@@ -154,5 +166,61 @@ class BottomBarWithSheetItem extends StatelessWidget {
             SizedBox(height: 2),
           ]),
     );
+  }
+}
+
+class ShapePainter extends CustomPainter {
+  final Color color;
+  final double radius;
+  final int shadowSpread;
+  final double strokeWidth;
+  final int spreadValue;
+  ShapePainter(
+      {this.strokeWidth,
+        this.radius,
+        this.color,
+        this.shadowSpread,
+        this.spreadValue});
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    List shadows = [];
+    for (var i = 1; i <= shadowSpread; i++) {
+      var shadow = Paint()
+        ..color = color
+        ..strokeWidth = strokeWidth
+        ..style = PaintingStyle.stroke
+        ..maskFilter = MaskFilter.blur(
+            BlurStyle.outer, convertRadiusToSigma((i * spreadValue).toDouble()))
+        ..strokeCap = StrokeCap.round;
+      shadows.add(shadow);
+    }
+
+    var stroke = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    Offset center = Offset(size.width / 2, size.height / 2);
+
+    shadows.forEach((element) {
+      canvas.drawCircle(center, radius, element);
+    });
+    canvas.drawCircle(center, radius, stroke);
+    canvas.drawCircle(center, radius, paint);
+  }
+
+  static double convertRadiusToSigma(double radius) {
+    return radius * 0.57735 + 0.5;
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
