@@ -207,7 +207,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                             Icons.keyboard_arrow_down,
                             size: 24,
                           ))),
-            Row(
+            widget.isOpened ? Container():Row(
               mainAxisAlignment: widget.bottomBarTheme.mainButtonPosition ==
                       MainButtonPosition.Middle
                   ? MainAxisAlignment.center
