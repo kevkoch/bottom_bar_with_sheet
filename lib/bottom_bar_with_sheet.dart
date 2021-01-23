@@ -115,6 +115,8 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
   AnimationController _arrowAnimationController;
   Animation _arrowAnimation;
   double _iconOpacity = 1;
+  DragStartDetails startVerticalDragDetails;
+  DragUpdateDetails updateVerticalDragDetails;
 
   @override
   void initState() {
@@ -155,13 +157,56 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
       child: AnimatedContainer(
         duration: duration,
         curve: curve,
-        height: _calculateWidgetHeight,
+        height: _calculateWidgetHeight + 24,
         padding: widget.bottomBarTheme.contentPadding,
         decoration: widget.bottomBarTheme.decoration.copyWith(
           color: backgroundColor,
         ),
         child: Column(
           children: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.isOpened = !widget.isOpened;
+                  });
+                },
+                onVerticalDragStart: (dragDetails) {
+                  startVerticalDragDetails = dragDetails;
+                },
+                onVerticalDragUpdate: (dragDetails) {
+                  setState(() {
+                    updateVerticalDragDetails = dragDetails;
+                  });
+                },
+                onVerticalDragEnd: (endDetails) {
+                  setState(() {
+                    double dx = updateVerticalDragDetails.globalPosition.dx -
+                        startVerticalDragDetails.globalPosition.dx;
+                    double dy = updateVerticalDragDetails.globalPosition.dy -
+                        startVerticalDragDetails.globalPosition.dy;
+                    double velocity = endDetails.primaryVelocity;
+                    if (dx < 0) dx = -dx;
+                    if (dy < 0) dy = -dy;
+
+                    if (velocity < 0) {
+                      widget.isOpened = true;
+                    } else {
+                      widget.isOpened = false;
+                    }
+                  });
+                },
+                child: Container(
+                    height: 24,
+                    width: MediaQuery.of(context).size.width * 1,
+                    child: !widget.isOpened
+                        ? Icon(
+                            Icons.keyboard_arrow_up_rounded,
+                            size: 24,
+                          )
+                        : Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 24,
+                          ))),
             Row(
               mainAxisAlignment: widget.bottomBarTheme.mainButtonPosition ==
                       MainButtonPosition.Middle
