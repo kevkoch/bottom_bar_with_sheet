@@ -30,6 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(child: Text("Place for your content")),
       bottomNavigationBar: BottomBarWithSheet(
+        isAudioPlayer: true,
+        audioName: "Test",
         disableMainActionButton: true,
         selectedIndex: _selectedIndex,
         sheetChild: Center(child: Text("Place for your another content")),
@@ -38,9 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedItemIconSize: 60,
           selectedItemIconColor: Color(0xFFbc13fe),
           itemIconColor: Colors.grey,
+          height: 200,
+          heightClosed: 200
         ),
+        percentage: 50,
+        icon: Icon(Icons.play_arrow),
+        onPressedAudioPlayer: (){},
         mainActionButtonTheme: MainActionButtonTheme(
-
         ),
         onSelectItem: (index) => setState(() => _selectedIndex = index),
         items: [

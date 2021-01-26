@@ -1,7 +1,8 @@
 library bottom_bar_with_sheet;
 
 import 'dart:math' as math;
-
+import 'package:bottom_bar_with_sheet/src/circular_progress.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'src/main_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ export 'src/main_action_button.dart';
 
 const constCurve = Curves.linear;
 const constDuration = Duration(milliseconds: 500);
+final CircularSliderAppearance appearance01 = CircularSliderAppearance();
 
 // ignore: must_be_immutable
 class BottomBarWithSheet extends StatefulWidget {
@@ -62,6 +64,14 @@ class BottomBarWithSheet extends StatefulWidget {
   /// Widget [MainActionButton] to create custom mainActionButton
   final MainActionButton mainActionButton;
 
+  final bool isAudioPlayer;
+  final String audioName;
+  final String audioDuration;
+  final double currentDuration;
+  double percentage;
+  final Icon icon;
+  VoidCallback onPressedAudioPlayer;
+
   BottomBarWithSheet({
     Key key,
     this.selectedIndex = 0,
@@ -71,6 +81,13 @@ class BottomBarWithSheet extends StatefulWidget {
     this.curve = constCurve,
     this.disableMainActionButton = false,
     this.mainActionButton,
+    this.isAudioPlayer = false,
+    this.audioName,
+    this.currentDuration,
+    this.audioDuration,
+    this.onPressedAudioPlayer,
+    this.percentage,
+    this.icon,
     @required this.sheetChild,
     this.items,
     @required this.bottomBarTheme,
@@ -162,63 +179,136 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
         decoration: widget.bottomBarTheme.decoration.copyWith(
           color: backgroundColor,
         ),
-        child: Column(
-          children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.isOpened = !widget.isOpened;
-                  });
-                },
-                onVerticalDragStart: (dragDetails) {
-                  startVerticalDragDetails = dragDetails;
-                },
-                onVerticalDragUpdate: (dragDetails) {
-                  setState(() {
-                    updateVerticalDragDetails = dragDetails;
-                  });
-                },
-                onVerticalDragEnd: (endDetails) {
-                  setState(() {
-                    double dx = updateVerticalDragDetails.globalPosition.dx -
-                        startVerticalDragDetails.globalPosition.dx;
-                    double dy = updateVerticalDragDetails.globalPosition.dy -
-                        startVerticalDragDetails.globalPosition.dy;
-                    double velocity = endDetails.primaryVelocity;
-                    if (dx < 0) dx = -dx;
-                    if (dy < 0) dy = -dy;
-
-                    if (velocity < 0) {
-                      widget.isOpened = true;
-                    } else {
-                      widget.isOpened = false;
-                    }
-                  });
-                },
-                child: Container(
-                    height: 24,
-                    width: MediaQuery.of(context).size.width * 1,
-                    child: !widget.isOpened
-                        ? Icon(
-                            Icons.keyboard_arrow_up_rounded,
-                            size: 24,
-                          )
-                        : Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 24,
-                          ))),
-            widget.isOpened ? Container():Row(
-              mainAxisAlignment: widget.bottomBarTheme.mainButtonPosition ==
-                      MainButtonPosition.Middle
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _buildBody(itemWidth, widget.disableMainActionButton),
-            ),
-            widget.isOpened ? Expanded(child: sheetChild) : Container()
-          ],
-        ),
+        child: widget.isAudioPlayer
+            ? buildAudioPlayer(context, itemWidth)
+            : buildBottomNavigationBar(context, itemWidth),
       ),
+    );
+  }
+
+  Column buildAudioPlayer(BuildContext context, double itemWidth) {
+    return Column(
+      children: [
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                widget.isOpened = !widget.isOpened;
+              });
+            },
+            onVerticalDragStart: (dragDetails) {
+              startVerticalDragDetails = dragDetails;
+            },
+            onVerticalDragUpdate: (dragDetails) {
+              setState(() {
+                updateVerticalDragDetails = dragDetails;
+              });
+            },
+            onVerticalDragEnd: (endDetails) {
+              setState(() {
+                double dx = updateVerticalDragDetails.globalPosition.dx -
+                    startVerticalDragDetails.globalPosition.dx;
+                double dy = updateVerticalDragDetails.globalPosition.dy -
+                    startVerticalDragDetails.globalPosition.dy;
+                double velocity = endDetails.primaryVelocity;
+                if (dx < 0) dx = -dx;
+                if (dy < 0) dy = -dy;
+
+                if (velocity < 0) {
+                  widget.isOpened = true;
+                } else {
+                  widget.isOpened = false;
+                }
+              });
+            },
+            child: Container(
+                height: 24,
+                width: MediaQuery.of(context).size.width * 1,
+                child: !widget.isOpened
+                    ? Icon(
+                        Icons.keyboard_arrow_up_rounded,
+                        size: 24,
+                      )
+                    : Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24,
+                      ))),
+        Text(
+          widget.audioName,
+          style: TextStyle(color: widget.mainActionButtonTheme.color),
+        ),
+        Row(children: [
+          CircularProgress(
+            heightCircular: 100,
+            widthCircular: 100,
+
+            icon: Icon(Icons.play_arrow,color: widget.mainActionButtonTheme.color,),
+            onPressed: widget.onPressedAudioPlayer,
+            percentage: widget.percentage,
+          )
+        ]),
+        widget.isOpened ? Expanded(child: sheetChild) : Container()
+      ],
+    );
+  }
+
+  Column buildBottomNavigationBar(BuildContext context, double itemWidth) {
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                widget.isOpened = !widget.isOpened;
+              });
+            },
+            onVerticalDragStart: (dragDetails) {
+              startVerticalDragDetails = dragDetails;
+            },
+            onVerticalDragUpdate: (dragDetails) {
+              setState(() {
+                updateVerticalDragDetails = dragDetails;
+              });
+            },
+            onVerticalDragEnd: (endDetails) {
+              setState(() {
+                double dx = updateVerticalDragDetails.globalPosition.dx -
+                    startVerticalDragDetails.globalPosition.dx;
+                double dy = updateVerticalDragDetails.globalPosition.dy -
+                    startVerticalDragDetails.globalPosition.dy;
+                double velocity = endDetails.primaryVelocity;
+                if (dx < 0) dx = -dx;
+                if (dy < 0) dy = -dy;
+
+                if (velocity < 0) {
+                  widget.isOpened = true;
+                } else {
+                  widget.isOpened = false;
+                }
+              });
+            },
+            child: Container(
+                height: 24,
+                width: MediaQuery.of(context).size.width * 1,
+                child: !widget.isOpened
+                    ? Icon(
+                        Icons.keyboard_arrow_up_rounded,
+                        size: 24,
+                      )
+                    : Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24,
+                      ))),
+        widget.isOpened
+            ? Container()
+            : Row(
+                mainAxisAlignment: widget.bottomBarTheme.mainButtonPosition ==
+                        MainButtonPosition.Middle
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _buildBody(itemWidth, widget.disableMainActionButton),
+              ),
+        widget.isOpened ? Expanded(child: sheetChild) : Container()
+      ],
     );
   }
 
