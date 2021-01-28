@@ -40,10 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedItemIconSize: 60,
           selectedItemIconColor: Color(0xFFbc13fe),
           itemIconColor: Colors.grey,
-          height: 200,
+          height: MediaQuery.of(context).size.height*0.9,
           heightClosed: 200
         ),
+        backgroundBoxColor: Colors.black54,
+        textTime: "00:00",
         percentage: 50,
+
         icon: Icon(Icons.play_arrow),
         onPressedAudioPlayer: (){},
         mainActionButtonTheme: MainActionButtonTheme(

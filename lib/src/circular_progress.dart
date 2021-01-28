@@ -10,6 +10,7 @@ class CircularProgress extends StatefulWidget {
   Color themeColor;
   double percentage;
   final Icon icon;
+  double iconSize;
   VoidCallback onPressed;
 
   CircularProgress(
@@ -17,6 +18,8 @@ class CircularProgress extends StatefulWidget {
       this.heightCircular,
       this.widthCircular,
       this.percentage,
+        this.iconSize,
+        this.themeColor,
       this.icon,
       this.onPressed})
       : super(key: key);
@@ -27,8 +30,9 @@ class CircularProgress extends StatefulWidget {
 
 class _CircularProgressState extends State<CircularProgress>
     with TickerProviderStateMixin {
+
   AnimationController percentageAnimationController;
-  @override
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -38,15 +42,15 @@ class _CircularProgressState extends State<CircularProgress>
       child: CustomPaint(
         foregroundPainter: MyPainter(
             lineColor: Colors.transparent,
-            completeColor: Colors.blueAccent,
+            completeColor: widget.themeColor,
             completePercent: widget.percentage ?? 0,
             width: 2.0),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
-            icon: Icon(Icons.play_arrow),
-            iconSize: 24,
-            color: Colors.purple,
+            icon: widget.icon,
+            iconSize: widget.iconSize,
+            color: widget.themeColor,
             splashColor: Colors.transparent,
             onPressed: widget.onPressed,
           ),

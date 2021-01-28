@@ -70,7 +70,13 @@ class BottomBarWithSheet extends StatefulWidget {
   final double currentDuration;
   double percentage;
   final Icon icon;
+  final Color backgroundBoxColor;
+  final String textTime;
+  final TextStyle textStyleTime;
+
   VoidCallback onPressedAudioPlayer;
+  VoidCallback onPressedReplay10;
+  VoidCallback onPressedSkip10;
 
   BottomBarWithSheet({
     Key key,
@@ -83,11 +89,16 @@ class BottomBarWithSheet extends StatefulWidget {
     this.mainActionButton,
     this.isAudioPlayer = false,
     this.audioName,
+    this.onPressedSkip10,
+    this.onPressedReplay10,
     this.currentDuration,
     this.audioDuration,
     this.onPressedAudioPlayer,
     this.percentage,
     this.icon,
+    this.backgroundBoxColor,
+    this.textTime,
+    this.textStyleTime,
     @required this.sheetChild,
     this.items,
     @required this.bottomBarTheme,
@@ -236,15 +247,48 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
           widget.audioName,
           style: TextStyle(color: widget.mainActionButtonTheme.color),
         ),
-        Row(children: [
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+            height: 56,
+            width: 300,
+            decoration: BoxDecoration(
+                color: widget.backgroundBoxColor,
+                borderRadius: BorderRadius.circular(9)),
+            child: Center(
+              child: Text(
+                widget.textTime,
+                style: widget.textStyleTime,
+              ),
+            )),
+        SizedBox(height: 10),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          IconButton(
+            icon: Icon(
+              Icons.replay_10_outlined,
+              size: 32,
+              color: widget.mainActionButtonTheme.color,
+            ),
+            onPressed: widget.onPressedReplay10,
+          ),
           CircularProgress(
+            themeColor: widget.mainActionButtonTheme.color,
             heightCircular: 100,
             widthCircular: 100,
-
-            icon: Icon(Icons.play_arrow,color: widget.mainActionButtonTheme.color,),
+            iconSize: 24,
+            icon: widget.icon,
             onPressed: widget.onPressedAudioPlayer,
             percentage: widget.percentage,
-          )
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.forward_10_outlined,
+              size: 32,
+              color: widget.mainActionButtonTheme.color,
+            ),
+            onPressed: widget.onPressedSkip10,
+          ),
         ]),
         widget.isOpened ? Expanded(child: sheetChild) : Container()
       ],
