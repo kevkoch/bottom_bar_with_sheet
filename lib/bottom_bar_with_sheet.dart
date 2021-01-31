@@ -135,21 +135,24 @@ class BottomBarWithSheet extends StatefulWidget {
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     with SingleTickerProviderStateMixin {
-  int selectedIndex;
-  final bool isOpened;
-  final Duration duration;
-  final Curve curve;
-  final MainAxisAlignment bottomBarMainAxisAlignment;
-  final Widget sheetChild;
+  int selectedIndex = 0;
+  //final bool isOpened;
+  //final Duration duration;
+  //final Curve curve;
+  //final MainAxisAlignment bottomBarMainAxisAlignment;
+  //final Widget sheetChild;
 
-  _BottomBarWithSheetState({
+  _BottomBarWithSheetState(
+    /*
     this.selectedIndex,
     this.isOpened,
     this.bottomBarMainAxisAlignment,
     this.duration,
     this.curve,
     this.sheetChild,
-  });
+
+     */
+  );
 
   Widget _actionButtonIcon;
   AnimationController _arrowAnimationController;
@@ -163,7 +166,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     super.initState();
     MainActionButtonTheme(icon: Icon(Icons.arrow_upward));
     _arrowAnimationController =
-        AnimationController(vsync: this, duration: duration);
+        AnimationController(vsync: this, duration: widget.duration);
     _arrowAnimation =
         Tween(begin: 0.0, end: 1.0).animate(_arrowAnimationController);
     _actionButtonIcon = widget.mainActionButtonTheme?.icon ?? null;
@@ -195,8 +198,8 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
             value: widget.bottomBarMainAxisAlignment),
       ],
       child: AnimatedContainer(
-        duration: duration,
-        curve: curve,
+        duration: widget.duration,
+        curve: widget.curve,
         height: _calculateWidgetHeight + 24,
         padding: widget.bottomBarTheme.contentPadding,
         decoration: widget.bottomBarTheme.decoration.copyWith(
@@ -309,7 +312,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
             onPressed: widget.onPressedSkip10,
           ),
         ]),
-        widget.isOpened ? Expanded(child: sheetChild) : Container()
+        widget.isOpened ? Expanded(child: widget.sheetChild) : Container()
       ],
     );
   }
@@ -370,7 +373,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _buildBody(itemWidth, widget.disableMainActionButton),
               ),
-        widget.isOpened ? Expanded(child: sheetChild) : Container()
+        widget.isOpened ? Expanded(child: widget.sheetChild) : Container()
       ],
     );
   }
