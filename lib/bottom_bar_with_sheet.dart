@@ -71,7 +71,7 @@ class BottomBarWithSheet extends StatefulWidget {
   final String audioName;
 
   /// Duration of the song
-  final String audioDuration;
+  String audioDuration;
 
   /// current Position in double value
   double currentDuration;
@@ -80,7 +80,7 @@ class BottomBarWithSheet extends StatefulWidget {
   double percentage;
 
   /// Set icon to show in middle widget
-  Icon icon;
+  final Icon icon;
 
   /// Background color for Currenttime widget
   final Color backgroundBoxColor;
@@ -131,8 +131,12 @@ class BottomBarWithSheet extends StatefulWidget {
         duration: duration,
         curve: curve,
         sheetChild: sheetChild,
+    currentDuration: currentDuration,
+    audioDuration: audioDuration
       );
 }
+
+
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     with SingleTickerProviderStateMixin {
@@ -142,12 +146,16 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
   final Curve curve;
   final MainAxisAlignment bottomBarMainAxisAlignment;
   final Widget sheetChild;
+  final String audioDuration;
+  final double currentDuration;
 
   _BottomBarWithSheetState({
     this.selectedIndex,
     this.isOpened,
     this.bottomBarMainAxisAlignment,
     this.duration,
+    this.audioDuration,
+    this.currentDuration,
     this.curve,
     this.sheetChild,
   });
@@ -278,7 +286,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                   //style: widget.textStyleTime,
                   style:TextStyle(fontSize: 30)
                 ),
-                Text(widget.audioDuration,style: TextStyle(fontSize: 10),)
+                Text(audioDuration,style: TextStyle(fontSize: 10),)
               ],
             ))),
         SizedBox(height: 25),
