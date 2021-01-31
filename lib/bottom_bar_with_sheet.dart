@@ -74,10 +74,7 @@ class BottomBarWithSheet extends StatefulWidget {
   String audioDuration;
 
   /// current Position in double value
-  double currentDuration;
-
-  /// percentage of song listened
-  double percentage;
+  final Stream<double> stream;
 
   /// Set icon to show in middle widget
   final Icon icon;
@@ -105,10 +102,9 @@ class BottomBarWithSheet extends StatefulWidget {
     this.audioName,
     this.onPressedSkip10,
     this.onPressedReplay10,
-    this.currentDuration,
     this.audioDuration,
     this.onPressedAudioPlayer,
-    this.percentage,
+    this.stream,
     this.icon,
     this.backgroundBoxColor,
     this.textStyleTime,
@@ -131,8 +127,7 @@ class BottomBarWithSheet extends StatefulWidget {
       duration: duration,
       curve: curve,
       sheetChild: sheetChild,
-      currentDuration: currentDuration,
-      audioDuration: audioDuration);
+      );
 }
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
@@ -143,16 +138,12 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
   final Curve curve;
   final MainAxisAlignment bottomBarMainAxisAlignment;
   final Widget sheetChild;
-  final String audioDuration;
-  final double currentDuration;
 
   _BottomBarWithSheetState({
     this.selectedIndex,
     this.isOpened,
     this.bottomBarMainAxisAlignment,
     this.duration,
-    this.audioDuration,
-    this.currentDuration,
     this.curve,
     this.sheetChild,
   });
@@ -199,7 +190,6 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
         Provider<bool>.value(value: widget.isOpened),
         Provider<MainAxisAlignment>.value(
             value: widget.bottomBarMainAxisAlignment),
-        Provider<double>.value(value:widget.currentDuration),
       ],
       child: AnimatedContainer(
         duration: duration,
@@ -279,11 +269,11 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.currentDuration.toString(),
+                Text(widget.stream.toString(),
                     //style: widget.textStyleTime,
                     style: TextStyle(fontSize: 30)),
                 Text(
-                  audioDuration,
+                  widget.audioDuration,
                   style: TextStyle(fontSize: 10),
                 )
               ],
@@ -305,7 +295,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
             iconSize: 24,
             icon: widget.icon,
             onPressed: widget.onPressedAudioPlayer,
-            percentage: widget.percentage,
+            percentage: 20,
           ),
           IconButton(
             icon: Icon(
