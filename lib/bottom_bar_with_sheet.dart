@@ -71,7 +71,7 @@ class BottomBarWithSheet extends StatefulWidget {
   final String audioName;
 
   /// Duration of the song
-  String audioDuration;
+  final String audioDuration;
 
   /// current Position in double value
   double currentDuration;
@@ -278,7 +278,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                   //style: widget.textStyleTime,
                   style:TextStyle(fontSize: 30)
                 ),
-                Text(widget.duration.toString(),style: TextStyle(fontSize: 10),)
+                Text(widget.audioDuration,style: TextStyle(fontSize: 10),)
               ],
             ))),
         SizedBox(height: 25),
