@@ -24,10 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('bottom_bar_with_sheet v0.5.1',
-            style: TextStyle(color: Colors.white)),
-      ),
       body: Center(child: Text("Place for your content")),
       bottomNavigationBar: BottomBarWithSheet(
         isAudioPlayer: true,
@@ -43,8 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
           height: MediaQuery.of(context).size.height*0.9,
           heightClosed: 200
         ),
-        backgroundBoxColor: Colors.black54,
-        textTime: "00:00",
+        backgroundBoxColor: Colors.grey[200],
+        currentDuration: 20,
         percentage: 50,
 
         icon: Icon(Icons.play_arrow),

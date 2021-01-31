@@ -64,14 +64,28 @@ class BottomBarWithSheet extends StatefulWidget {
   /// Widget [MainActionButton] to create custom mainActionButton
   final MainActionButton mainActionButton;
 
+  /// Set AudioPlayer true for activate different widgettyp
   final bool isAudioPlayer;
+
+  /// Audio song name
   final String audioName;
-  final String audioDuration;
-  final double currentDuration;
+
+  /// Duration of the song
+  String audioDuration;
+
+  /// current Position in double value
+  double currentDuration;
+
+  /// percentage of song listened
   double percentage;
-  final Icon icon;
+
+  /// Set icon to show in middle widget
+  Icon icon;
+
+  /// Background color for Currenttime widget
   final Color backgroundBoxColor;
-  final String textTime;
+
+  /// TextStyle for current time
   final TextStyle textStyleTime;
 
   VoidCallback onPressedAudioPlayer;
@@ -97,7 +111,6 @@ class BottomBarWithSheet extends StatefulWidget {
     this.percentage,
     this.icon,
     this.backgroundBoxColor,
-    this.textTime,
     this.textStyleTime,
     @required this.sheetChild,
     this.items,
@@ -257,12 +270,18 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                 color: widget.backgroundBoxColor,
                 borderRadius: BorderRadius.circular(9)),
             child: Center(
-              child: Text(
-                widget.textTime,
-                style: widget.textStyleTime,
-              ),
-            )),
-        SizedBox(height: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.currentDuration.toString(),
+                  //style: widget.textStyleTime,
+                  style:TextStyle(fontSize: 30)
+                ),
+                Text(widget.duration.toString(),style: TextStyle(fontSize: 10),)
+              ],
+            ))),
+        SizedBox(height: 25),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           IconButton(
             icon: Icon(
@@ -274,8 +293,8 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
           ),
           CircularProgress(
             themeColor: widget.mainActionButtonTheme.color,
-            heightCircular: 100,
-            widthCircular: 100,
+            heightCircular: 75,
+            widthCircular: 75,
             iconSize: 24,
             icon: widget.icon,
             onPressed: widget.onPressedAudioPlayer,
