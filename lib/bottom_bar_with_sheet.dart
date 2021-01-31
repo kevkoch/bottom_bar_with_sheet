@@ -125,18 +125,15 @@ class BottomBarWithSheet extends StatefulWidget {
 
   @override
   _BottomBarWithSheetState createState() => _BottomBarWithSheetState(
-        selectedIndex: selectedIndex,
-        isOpened: isOpened,
-        bottomBarMainAxisAlignment: bottomBarMainAxisAlignment,
-        duration: duration,
-        curve: curve,
-        sheetChild: sheetChild,
-    currentDuration: currentDuration,
-    audioDuration: audioDuration
-      );
+      selectedIndex: selectedIndex,
+      isOpened: isOpened,
+      bottomBarMainAxisAlignment: bottomBarMainAxisAlignment,
+      duration: duration,
+      curve: curve,
+      sheetChild: sheetChild,
+      currentDuration: currentDuration,
+      audioDuration: audioDuration);
 }
-
-
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     with SingleTickerProviderStateMixin {
@@ -202,6 +199,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
         Provider<bool>.value(value: widget.isOpened),
         Provider<MainAxisAlignment>.value(
             value: widget.bottomBarMainAxisAlignment),
+        Provider<double>.value(value:widget.currentDuration),
       ],
       child: AnimatedContainer(
         duration: duration,
@@ -279,14 +277,15 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                 borderRadius: BorderRadius.circular(9)),
             child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(widget.currentDuration.toString(),
+                    //style: widget.textStyleTime,
+                    style: TextStyle(fontSize: 30)),
                 Text(
-                  widget.currentDuration.toString(),
-                  //style: widget.textStyleTime,
-                  style:TextStyle(fontSize: 30)
-                ),
-                Text(audioDuration,style: TextStyle(fontSize: 10),)
+                  audioDuration,
+                  style: TextStyle(fontSize: 10),
+                )
               ],
             ))),
         SizedBox(height: 25),

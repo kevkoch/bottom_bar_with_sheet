@@ -1,6 +1,6 @@
 import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:flutter/material.dart';
-
+import 'package:assets_audio_player/assets_audio_player.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,6 +20,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  final assetsAudioPlayer = AssetsAudioPlayer();
+  double currentPlayedat = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomBarWithSheet(
         isAudioPlayer: true,
         audioName: "Test",
+        audioDuration: currentPlayedat.toString(),
         disableMainActionButton: true,
         selectedIndex: _selectedIndex,
         sheetChild: Center(child: Text("Place for your another content")),
@@ -44,7 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
         percentage: 50,
 
         icon: Icon(Icons.play_arrow),
-        onPressedAudioPlayer: (){},
+        onPressedAudioPlayer: (){
+        },
         mainActionButtonTheme: MainActionButtonTheme(
         ),
         onSelectItem: (index) => setState(() => _selectedIndex = index),
