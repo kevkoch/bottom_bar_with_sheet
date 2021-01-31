@@ -51,9 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
           heightClosed: 200
         ),
         backgroundBoxColor: Colors.grey[200],
-        currentDuration: 20,
-        percentage: 50,
-
         icon: Icon(Icons.play_arrow),
         onPressedAudioPlayer: (){
         },

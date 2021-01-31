@@ -120,7 +120,8 @@ class BottomBarWithSheet extends StatefulWidget {
   }
 
   @override
-  _BottomBarWithSheetState createState() => _BottomBarWithSheetState(
+  _BottomBarWithSheetState createState() => _BottomBarWithSheetState();
+    /*
       selectedIndex: selectedIndex,
       isOpened: isOpened,
       bottomBarMainAxisAlignment: bottomBarMainAxisAlignment,
@@ -128,6 +129,8 @@ class BottomBarWithSheet extends StatefulWidget {
       curve: curve,
       sheetChild: sheetChild,
       );
+
+     */
 }
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
