@@ -74,7 +74,7 @@ class BottomBarWithSheet extends StatefulWidget {
   String audioDuration;
 
   /// current Position in double value
-  final Stream<double> stream;
+  final String currentPosition;
 
   /// Set icon to show in middle widget
   final Icon icon;
@@ -104,7 +104,7 @@ class BottomBarWithSheet extends StatefulWidget {
     this.onPressedReplay10,
     this.audioDuration,
     this.onPressedAudioPlayer,
-    this.stream,
+    this.currentPosition,
     this.icon,
     this.backgroundBoxColor,
     this.textStyleTime,
@@ -120,39 +120,33 @@ class BottomBarWithSheet extends StatefulWidget {
   }
 
   @override
-  _BottomBarWithSheetState createState() => _BottomBarWithSheetState();
-    /*
-      selectedIndex: selectedIndex,
-      isOpened: isOpened,
-      bottomBarMainAxisAlignment: bottomBarMainAxisAlignment,
-      duration: duration,
-      curve: curve,
-      sheetChild: sheetChild,
+  _BottomBarWithSheetState createState() => _BottomBarWithSheetState(
+        selectedIndex: selectedIndex,
+        isOpened: isOpened,
+        bottomBarMainAxisAlignment: bottomBarMainAxisAlignment,
+        duration: duration,
+        curve: curve,
+        sheetChild: sheetChild,
       );
-
-     */
 }
 
 class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     with SingleTickerProviderStateMixin {
-  int selectedIndex = 0;
-  //final bool isOpened;
-  //final Duration duration;
-  //final Curve curve;
-  //final MainAxisAlignment bottomBarMainAxisAlignment;
-  //final Widget sheetChild;
+  int selectedIndex;
+  final bool isOpened;
+  final Duration duration;
+  final Curve curve;
+  final MainAxisAlignment bottomBarMainAxisAlignment;
+  final Widget sheetChild;
 
-  _BottomBarWithSheetState(
-    /*
+  _BottomBarWithSheetState({
     this.selectedIndex,
     this.isOpened,
     this.bottomBarMainAxisAlignment,
     this.duration,
     this.curve,
     this.sheetChild,
-
-     */
-  );
+  });
 
   Widget _actionButtonIcon;
   AnimationController _arrowAnimationController;
@@ -216,48 +210,38 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     return Column(
       children: [
         GestureDetector(
-            onTap: () {
-              setState(() {
-                widget.isOpened = !widget.isOpened;
-              });
-            },
-            onVerticalDragStart: (dragDetails) {
-              startVerticalDragDetails = dragDetails;
-            },
-            onVerticalDragUpdate: (dragDetails) {
-              setState(() {
-                updateVerticalDragDetails = dragDetails;
-              });
-            },
-            onVerticalDragEnd: (endDetails) {
-              setState(() {
-                double dx = updateVerticalDragDetails.globalPosition.dx -
-                    startVerticalDragDetails.globalPosition.dx;
-                double dy = updateVerticalDragDetails.globalPosition.dy -
-                    startVerticalDragDetails.globalPosition.dy;
-                double velocity = endDetails.primaryVelocity;
-                if (dx < 0) dx = -dx;
-                if (dy < 0) dy = -dy;
+          onTap: () {
+            setState(() {
+              widget.isOpened = !widget.isOpened;
+            });
+          },
+          onVerticalDragStart: (dragDetails) {
+            startVerticalDragDetails = dragDetails;
+          },
+          onVerticalDragUpdate: (dragDetails) {
+            setState(() {
+              updateVerticalDragDetails = dragDetails;
+            });
+          },
+          onVerticalDragEnd: (endDetails) {
+            setState(() {
+              double dx = updateVerticalDragDetails.globalPosition.dx -
+                  startVerticalDragDetails.globalPosition.dx;
+              double dy = updateVerticalDragDetails.globalPosition.dy -
+                  startVerticalDragDetails.globalPosition.dy;
+              double velocity = endDetails.primaryVelocity;
+              if (dx < 0) dx = -dx;
+              if (dy < 0) dy = -dy;
 
-                if (velocity < 0) {
-                  widget.isOpened = true;
-                } else {
-                  widget.isOpened = false;
-                }
-              });
-            },
-            child: Container(
-                height: 24,
-                width: MediaQuery.of(context).size.width * 1,
-                child: !widget.isOpened
-                    ? Icon(
-                        Icons.keyboard_arrow_up_rounded,
-                        size: 24,
-                      )
-                    : Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 24,
-                      ))),
+              if (velocity < 0) {
+                widget.isOpened = true;
+              } else {
+                widget.isOpened = false;
+              }
+            });
+          },
+          child: _buildUpDownIcon(context)
+        ),
         Text(
           widget.audioName,
           style: TextStyle(color: widget.mainActionButtonTheme.color),
@@ -271,50 +255,59 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
             decoration: BoxDecoration(
                 color: widget.backgroundBoxColor,
                 borderRadius: BorderRadius.circular(9)),
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(widget.stream.toString(),
-                    //style: widget.textStyleTime,
-                    style: TextStyle(fontSize: 30)),
-                Text(
-                  widget.audioDuration,
-                  style: TextStyle(fontSize: 10),
-                )
-              ],
-            ))),
+            child: buildCurrentPos()),
         SizedBox(height: 25),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          IconButton(
-            icon: Icon(
-              Icons.replay_10_outlined,
-              size: 32,
-              color: widget.mainActionButtonTheme.color,
-            ),
-            onPressed: widget.onPressedReplay10,
-          ),
-          CircularProgress(
-            themeColor: widget.mainActionButtonTheme.color,
-            heightCircular: 75,
-            widthCircular: 75,
-            iconSize: 24,
-            icon: widget.icon,
-            onPressed: widget.onPressedAudioPlayer,
-            percentage: 20,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.forward_10_outlined,
-              size: 32,
-              color: widget.mainActionButtonTheme.color,
-            ),
-            onPressed: widget.onPressedSkip10,
-          ),
-        ]),
+        _buildPlaySkipRow(),
         widget.isOpened ? Expanded(child: widget.sheetChild) : Container()
       ],
     );
+  }
+
+
+  Center buildCurrentPos() {
+    return Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(widget.currentPosition,
+                  //style: widget.textStyleTime,
+                  style: TextStyle(fontSize: 30)),
+              Text(
+                widget.audioDuration,
+                style: TextStyle(fontSize: 10),
+              )
+            ],
+          ));
+  }
+
+  Row _buildPlaySkipRow() {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        IconButton(
+          icon: Icon(
+            Icons.replay_10_outlined,
+            size: 32,
+            color: widget.mainActionButtonTheme.color,
+          ),
+          onPressed: widget.onPressedReplay10,
+        ),
+        CircularProgress(
+          themeColor: widget.mainActionButtonTheme.color,
+          heightCircular: 75,
+          widthCircular: 75,
+          iconSize: 24,
+          icon: widget.icon,
+          onPressed: widget.onPressedAudioPlayer,
+          percentage: 20,
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.forward_10_outlined,
+            size: 32,
+            color: widget.mainActionButtonTheme.color,
+          ),
+          onPressed: widget.onPressedSkip10,
+        ),
+      ]);
   }
 
   Column buildBottomNavigationBar(BuildContext context, double itemWidth) {
@@ -351,18 +344,7 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
                 }
               });
             },
-            child: Container(
-                height: 24,
-                width: MediaQuery.of(context).size.width * 1,
-                child: !widget.isOpened
-                    ? Icon(
-                        Icons.keyboard_arrow_up_rounded,
-                        size: 24,
-                      )
-                    : Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 24,
-                      ))),
+            child: _buildUpDownIcon(context)),
         widget.isOpened
             ? Container()
             : Row(
@@ -376,6 +358,21 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
         widget.isOpened ? Expanded(child: widget.sheetChild) : Container()
       ],
     );
+  }
+
+  Container _buildUpDownIcon(BuildContext context) {
+    return Container(
+              height: 24,
+              width: MediaQuery.of(context).size.width * 1,
+              child: !widget.isOpened
+                  ? Icon(
+                      Icons.keyboard_arrow_up_rounded,
+                      size: 24,
+                    )
+                  : Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 24,
+                    ));
   }
 
   List<Widget> _buildBody(itemWidth, bool disableMainActionButton) {
