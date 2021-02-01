@@ -210,38 +210,37 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            setState(() {
-              widget.isOpened = !widget.isOpened;
-            });
-          },
-          onVerticalDragStart: (dragDetails) {
-            startVerticalDragDetails = dragDetails;
-          },
-          onVerticalDragUpdate: (dragDetails) {
-            setState(() {
-              updateVerticalDragDetails = dragDetails;
-            });
-          },
-          onVerticalDragEnd: (endDetails) {
-            setState(() {
-              double dx = updateVerticalDragDetails.globalPosition.dx -
-                  startVerticalDragDetails.globalPosition.dx;
-              double dy = updateVerticalDragDetails.globalPosition.dy -
-                  startVerticalDragDetails.globalPosition.dy;
-              double velocity = endDetails.primaryVelocity;
-              if (dx < 0) dx = -dx;
-              if (dy < 0) dy = -dy;
+            onTap: () {
+              setState(() {
+                widget.isOpened = !widget.isOpened;
+              });
+            },
+            onVerticalDragStart: (dragDetails) {
+              startVerticalDragDetails = dragDetails;
+            },
+            onVerticalDragUpdate: (dragDetails) {
+              setState(() {
+                updateVerticalDragDetails = dragDetails;
+              });
+            },
+            onVerticalDragEnd: (endDetails) {
+              setState(() {
+                double dx = updateVerticalDragDetails.globalPosition.dx -
+                    startVerticalDragDetails.globalPosition.dx;
+                double dy = updateVerticalDragDetails.globalPosition.dy -
+                    startVerticalDragDetails.globalPosition.dy;
+                double velocity = endDetails.primaryVelocity;
+                if (dx < 0) dx = -dx;
+                if (dy < 0) dy = -dy;
 
-              if (velocity < 0) {
-                widget.isOpened = true;
-              } else {
-                widget.isOpened = false;
-              }
-            });
-          },
-          child: _buildUpDownIcon(context)
-        ),
+                if (velocity < 0) {
+                  widget.isOpened = true;
+                } else {
+                  widget.isOpened = false;
+                }
+              });
+            },
+            child: _buildUpDownIcon(context)),
         Text(
           widget.audioName,
           style: TextStyle(color: widget.mainActionButtonTheme.color),
@@ -263,51 +262,50 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
     );
   }
 
-
   Center buildCurrentPos() {
     return Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(widget.currentPosition,
-                  //style: widget.textStyleTime,
-                  style: TextStyle(fontSize: 30)),
-              Text(
-                widget.audioDuration,
-                style: TextStyle(fontSize: 10),
-              )
-            ],
-          ));
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(widget.currentPosition,
+            //style: widget.textStyleTime,
+            style: TextStyle(fontSize: 30)),
+        Text(
+          widget.audioDuration,
+          style: TextStyle(fontSize: 10),
+        )
+      ],
+    ));
   }
 
   Row _buildPlaySkipRow() {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        IconButton(
-          icon: Icon(
-            Icons.replay_10_outlined,
-            size: 32,
-            color: widget.mainActionButtonTheme.color,
-          ),
-          onPressed: widget.onPressedReplay10,
+      IconButton(
+        icon: Icon(
+          Icons.replay_10_outlined,
+          size: 32,
+          color: widget.mainActionButtonTheme.color,
         ),
-        CircularProgress(
-          themeColor: widget.mainActionButtonTheme.color,
-          heightCircular: 75,
-          widthCircular: 75,
-          iconSize: 24,
-          icon: widget.icon,
-          onPressed: widget.onPressedAudioPlayer,
-          percentage: 20,
+        onPressed: widget.onPressedReplay10,
+      ),
+      CircularProgress(
+        themeColor: widget.mainActionButtonTheme.color,
+        heightCircular: 75,
+        widthCircular: 75,
+        iconSize: 24,
+        icon: widget.icon,
+        onPressed: widget.onPressedAudioPlayer,
+        percentage: 20,
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.forward_10_outlined,
+          size: 32,
+          color: widget.mainActionButtonTheme.color,
         ),
-        IconButton(
-          icon: Icon(
-            Icons.forward_10_outlined,
-            size: 32,
-            color: widget.mainActionButtonTheme.color,
-          ),
-          onPressed: widget.onPressedSkip10,
-        ),
-      ]);
+        onPressed: widget.onPressedSkip10,
+      ),
+    ]);
   }
 
   Column buildBottomNavigationBar(BuildContext context, double itemWidth) {
@@ -362,17 +360,17 @@ class _BottomBarWithSheetState extends State<BottomBarWithSheet>
 
   Container _buildUpDownIcon(BuildContext context) {
     return Container(
-              height: 24,
-              width: MediaQuery.of(context).size.width * 1,
-              child: !widget.isOpened
-                  ? Icon(
-                      Icons.keyboard_arrow_up_rounded,
-                      size: 24,
-                    )
-                  : Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 24,
-                    ));
+        height: 24,
+        width: MediaQuery.of(context).size.width * 1,
+        child: !widget.isOpened
+            ? Icon(
+                Icons.keyboard_arrow_up_rounded,
+                size: 24,
+              )
+            : Icon(
+                Icons.keyboard_arrow_down,
+                size: 24,
+              ));
   }
 
   List<Widget> _buildBody(itemWidth, bool disableMainActionButton) {

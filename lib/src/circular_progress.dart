@@ -18,8 +18,8 @@ class CircularProgress extends StatefulWidget {
       this.heightCircular,
       this.widthCircular,
       this.percentage,
-        this.iconSize,
-        this.themeColor,
+      this.iconSize,
+      this.themeColor,
       this.icon,
       this.onPressed})
       : super(key: key);
@@ -30,7 +30,6 @@ class CircularProgress extends StatefulWidget {
 
 class _CircularProgressState extends State<CircularProgress>
     with TickerProviderStateMixin {
-
   AnimationController percentageAnimationController;
 
   @override
